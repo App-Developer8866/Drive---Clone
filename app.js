@@ -1,9 +1,12 @@
 const express = require("express");
 const morgan = require("morgan");
-const userRoutes = require("./routes/userRoutes");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
+
+const userRoutes = require("./routes/userRoutes");
+const fileRoutes = require("./routes/fileRoutes");
+
 
 dotenv.config();
 connectDB();
@@ -21,6 +24,7 @@ server.use(cookieParser());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
+server.use("/", fileRoutes);
 server.use("/user", userRoutes);
 
 server.listen(PORT);
