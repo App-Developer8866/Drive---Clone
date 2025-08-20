@@ -1,5 +1,7 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
+const userModel = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -29,7 +31,7 @@ router.post(
     .withMessage("Password is required")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
-  (req, res) => {
+  async (req, res) => {
     console.log("Received user form data:", req.body);
 
     const errors = validationResult(req);
@@ -38,7 +40,19 @@ router.post(
         .status(400)
         .json({ errors: errors.array(), message: "Validation failed" });
     }
-    res.send("User registration data received successfully!");
+
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 8);
+    const newUser = await userModel.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    res.status(200).json({
+      message: "User registered successfully",
+      user: newUser,
+    });
   }
 );
 
