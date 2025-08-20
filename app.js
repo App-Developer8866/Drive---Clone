@@ -2,8 +2,10 @@ const express = require("express");
 const morgan = require("morgan");
 const userRoutes = require("./routes/userRoutes");
 const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 
 dotenv.config();
+connectDB();
 
 const server = express();
 const PORT = process.env.PORT || 8080;
