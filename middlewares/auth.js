@@ -4,6 +4,7 @@ const authMiddleware = (req, res, next) => {
   const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
+    res.redirect("/user/login");
     return res.status(401).json({ message: "Unauthorized user" });
   }
 
@@ -13,6 +14,7 @@ const authMiddleware = (req, res, next) => {
 
     return next();
   } catch (error) {
+    res.redirect("/user/login");
     return res.status(401).json({ message: "Unauthorized user" });
   }
 };
