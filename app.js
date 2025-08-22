@@ -7,7 +7,6 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
 const fileRoutes = require("./routes/fileRoutes");
 
-
 dotenv.config();
 connectDB();
 
@@ -21,8 +20,8 @@ server.use(morgan("dev"));
 // Middleware to parse cookies
 server.use(cookieParser());
 // Middleware to parse JSON and URL-encoded data
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+server.use(express.json({ limit: "50mb" }));
+server.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 server.use("/", fileRoutes);
 server.use("/user", userRoutes);
