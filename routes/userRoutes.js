@@ -100,10 +100,17 @@ router.post(
 
     res.cookie("token", token);
 
-    res.status(200).json({
-      message: "User logged in successfully",
-    });
+    // res.status(200).json({
+    //   message: "User logged in successfully",
+    // });
+
+    res.redirect("/home");
   }
 );
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/user/login");
+});
 
 module.exports = router;
